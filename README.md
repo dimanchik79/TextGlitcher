@@ -192,17 +192,4 @@ Solution: Install Microsoft Visual C++ Redistributable for Visual Studio 2015-20
 
 Made with ❤️ using Python and PyQt5
 
----
-
-**How to save:**
-
-1. Select ALL the text above (from the first line to the last)
-2. Press Ctrl+C (copy)
-3. Open Notepad
-4. Press Ctrl+V (paste)
-5. Click File → Save As...
-6. In the "File name" field, type: README.md
-7. In the "Save as type" field, select "All files (*.*)"
-8. Click "Save"
-
 Done! Now you have a README.md file.
