@@ -218,6 +218,45 @@ class TextGlitcherApp(QMainWindow):
         self.files = []
         self.dark_mode = True
         self.current_lang = 'ru'
+        
+        # Список папок для игнорирования
+        self.ignore_folders = {
+            # Python
+            '__pycache__',
+            '.venv',
+            'venv',
+            'env',
+            '.env',
+            '__pypackages__',
+            '.mypy_cache',
+            '.pytest_cache',
+            '.tox',
+            '.eggs',
+            '*.egg-info',
+            '.ruff_cache',
+            '.coverage',
+            'htmlcov',
+            'dist',
+            'build',
+            
+            # IDE
+            '.idea',
+            '.vscode',
+            '.gigacode',
+            
+            # Git
+            '.git',
+            '.gitignore',
+            
+            # JavaScript/Node
+            'node_modules',
+            
+            # Other
+            '__MACOSX',
+            '.DS_Store',
+            'Thumbs.db',
+        }
+        
         self.init_ui()
         self.apply_styles()
         self.apply_theme()
@@ -968,16 +1007,35 @@ class TextGlitcherApp(QMainWindow):
                 self.set_status(self._('status_added_folder', added), "success")
     
     def load_folder(self, folder_path):
+        """
+        Загружает файлы из папки, игнорируя системные и временные папки
+        
+        Игнорируемые папки:
+        - __pycache__, .venv, venv, env, .env - Python окружения
+        - .gigacode, .idea, .vscode - IDE настройки
+        - .git, .gitignore - Git репозитории
+        - node_modules - Node.js зависимости
+        - и другие служебные папки
+        """
         added = 0
+        
         for root, dirs, files in os.walk(folder_path):
+            # Исключаем игнорируемые папки из обхода
+            dirs[:] = [d for d in dirs 
+                      if d not in self.ignore_folders 
+                      and not d.startswith('.')]
+            
             for file in files:
+                # Проверяем расширение файла
                 ext = os.path.splitext(file)[1].lower()
                 supported = ['.txt', '.log', '.csv', '.json', '.xml', '.md', 
-                           '.py', '.js', '.html', '.css', '.ini', '.cfg', '.conf']
+                            '.py', '.js', '.html', '.css', '.ini', '.cfg', '.conf']
+                
                 if ext in supported:
                     file_path = os.path.join(root, file)
                     if self.load_file(file_path):
                         added += 1
+        
         return added
     
     def load_file(self, file_path):
