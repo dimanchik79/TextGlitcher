@@ -54,14 +54,21 @@ LANG = {
     'menu_clear': {'ru': '🗑 Очистить все', 'en': '🗑 Clear all'},
     'menu_root': {'ru': 'Корень', 'en': 'Root'},
     
-    'filter_text': {'ru': 'Текстовые файлы (*.txt *.log *.csv *.json *.xml *.md *.py *.js *.html *.css *.ini *.cfg *.conf);;Все файлы (*.*)', 
-                    'en': 'Text files (*.txt *.log *.csv *.json *.xml *.md *.py *.js *.html *.css *.ini *.cfg *.conf);;All files (*.*)'},
+    'filter_text': {'ru': 'Текстовые файлы (*.txt *.log *.csv *.json *.xml *.md *.py *.js *.html *.css *.ini *.cfg *.conf *.tsx *.ts);;Все файлы (*.*)', 
+                    'en': 'Text files (*.txt *.log *.csv *.json *.xml *.md *.py *.js *.html *.css *.ini *.cfg *.conf *.tsx *.ts);;All files (*.*)'},
     'filter_save': {'ru': 'Текстовые файлы (*.txt)', 'en': 'Text files (*.txt)'},
     
     'size_b': {'ru': 'Б', 'en': 'B'},
     'size_kb': {'ru': 'КБ', 'en': 'KB'},
     'size_mb': {'ru': 'МБ', 'en': 'MB'},
     'size_gb': {'ru': 'ГБ', 'en': 'GB'},
+}
+
+# ==================== ПОДДЕРЖИВАЕМЫЕ РАСШИРЕНИЯ ====================
+SUPPORTED_EXTENSIONS = {
+    '.txt', '.log', '.csv', '.json', '.xml', '.md',
+    '.py', '.js', '.html', '.css', '.ini', '.cfg', '.conf',
+    '.ts', '.tsx',
 }
 
 class FileItem:
@@ -1028,10 +1035,8 @@ class TextGlitcherApp(QMainWindow):
             for file in files:
                 # Проверяем расширение файла
                 ext = os.path.splitext(file)[1].lower()
-                supported = ['.txt', '.log', '.csv', '.json', '.xml', '.md', 
-                            '.py', '.js', '.html', '.css', '.ini', '.cfg', '.conf']
                 
-                if ext in supported:
+                if ext in SUPPORTED_EXTENSIONS:
                     file_path = os.path.join(root, file)
                     if self.load_file(file_path):
                         added += 1
@@ -1040,10 +1045,8 @@ class TextGlitcherApp(QMainWindow):
     
     def load_file(self, file_path):
         ext = os.path.splitext(file_path)[1].lower()
-        supported = ['.txt', '.log', '.csv', '.json', '.xml', '.md', 
-                    '.py', '.js', '.html', '.css', '.ini', '.cfg', '.conf']
         
-        if ext not in supported:
+        if ext not in SUPPORTED_EXTENSIONS:
             return False
         
         try:
